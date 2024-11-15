@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brent Oil Price Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Brent Oil Price Change Point Dashboard</h1>
+
+    <!-- Table displaying the data -->
+    <h3>Brent Oil Prices (Raw Data)</h3>
+    <div>
+        {{ data | safe }}  <!-- This will render the DataFrame as an HTML table -->
+    </div>
+
+    <!-- Optionally display some analysis results -->
+    <h3>Exploratory Data Analysis</h3>
+    <div>
+        <pre>{{ analysis | safe }}</pre>  <!-- Display analysis results (summary statistics) -->
+    </div>
+
+    <!-- Add charts or other visualizations -->
+    <h3>Price Trend</h3>
+    <canvas id="priceTrendChart"></canvas>
+    <script>
+        var ctx = document.getElementById('priceTrendChart').getContext('2d');
+        var priceTrendChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ dates | tojson }}, 
+                datasets: [{
+                    label: 'Brent Oil Price',
+                    data: {{ prices | tojson }}, 
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'month'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</div>
+
+</body>
+
+<!-- Pass dates and prices as JSON objects -->
+
+
+</html>
+<script type="text/javascript">
+    // Convert the 'dates' and 'prices' lists into JavaScript arrays
+    const labels = {{ dates | tojson }};
+    const prices = {{ prices | tojson }};
+    
+    console.log(labels);  // To check the data
+    console.log(prices);
+
+    // Use these in your chart setup, for example:
+    new Chart(document.getElementById('chart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Brent Oil Price',
+                data: prices,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+

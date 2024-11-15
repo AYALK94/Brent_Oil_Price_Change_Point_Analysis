@@ -1,0 +1,10 @@
+pandas
+matplotlib
+seaborn
+statsmodels
+numpy
+keras
+tensorflow
+flask
+ruptures
+pytest
